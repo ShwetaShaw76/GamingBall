@@ -4,5 +4,14 @@
 }
 
 body{
-    background : rgba(0,0,0,0.9);
+    background : rgba(255,255,255,0.9);
+}
+
+#info{
+    position:absolute;
+    text-align:center;
+    top: 10px ;
+    display:block;
+    width: 100%;
+    z-index:100;
 }
