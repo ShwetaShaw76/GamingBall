@@ -8,6 +8,8 @@ const renderer = new THREE.WebGLRenderer({
     canvas : document.querySelector("#bg")
 });
 
+
+
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -17,7 +19,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
 camera.position.set(0,0,50);
 
-const courtYard = new THREE.TextureLoader().load('court.webp');
+const courtYard = new THREE.TextureLoader().load('Volleycourt.jpg');
 scene.background = courtYard;
 
 const basketBallTexture = new THREE.TextureLoader().load('basket-texture-orange-vector.jpg');
@@ -35,6 +37,30 @@ const VolleyBall = new THREE.Mesh(
 );
 VolleyBall.position.set(-30,0,0);
 scene.add(VolleyBall);
+
+const footballTexture = new THREE.TextureLoader().load('football.avif');
+const SmileyTexture = new THREE.TextureLoader().load('SmieyBall.jpg');
+const change = document.getElementById("change");
+const i = false;
+change.addEventListener('click',changeTexture);
+function changeTexture(){
+    if(i==true){
+        sphere.material.map = basketBallTexture;
+        sphere.material.needsUpdate = true;
+
+        VolleyBall.material.map = VolletTexture;
+        VolleyBall.material.needsUpdate = true;
+        i=false;
+    }
+    else{
+        sphere.material.map = footballTexture;
+        sphere.material.needsUpdate = true;
+
+        VolleyBall.material.map = SmileyTexture;
+        VolleyBall.material.needsUpdate = true;
+        i=true;
+    }
+}
 
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(20,20,20);
