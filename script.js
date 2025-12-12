@@ -41,7 +41,7 @@ scene.add(VolleyBall);
 const footballTexture = new THREE.TextureLoader().load('football.avif');
 const SmileyTexture = new THREE.TextureLoader().load('SmieyBall.jpg');
 const change = document.getElementById("change");
-const i = false;
+let i = false;
 change.addEventListener('click',changeTexture);
 function changeTexture(){
     if(i==true){
