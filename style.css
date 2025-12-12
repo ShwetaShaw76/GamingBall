@@ -1,17 +1,62 @@
 *{
     margin :0;
-    padding :0;
+    padding:0;
 }
 
-body{
-    background : rgba(255,255,255,0.9);
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
 }
 
-#info{
+main{
     position:absolute;
-    text-align:center;
-    top: 10px ;
-    display:block;
-    width: 100%;
-    z-index:100;
+    z-index:10;
 }
+
+h1{
+    font-size:8rem;
+    padding:5vw;
+    color:lightblue;
+    text-align:center;
+    margin-top:15px;
+    text-shadow: 2px 2px 4px black;
+}
+
+button{
+    text-align:center;
+    font-size:2rem;
+    padding: 5px;
+    border-radius: 10px;
+    background-color:lightblue;
+}
+
+button:hover{
+    background-color:rgba(0,0,85,0.4);
+    color:white;
+    cursor:pointer;
+}
+
+article{
+    color:yellow;
+    font-size:3rem;
+    text-align:center;
+    padding:0 15vw;
+    text-shadow: 2px 4px 4px black;
+
+}
+
+li{
+    padding:2vh;
+}
+
+p{
+    margin:5vh;
+}
+footer{
+    margin-top:20vh;
+    font-size:5rem;
+}
+

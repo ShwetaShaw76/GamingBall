@@ -1,41 +1,85 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-// import { cameraPosition } from 'three/tsl';
 
-const loader = new GLTFLoader();
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-const renderer = new THREE.WebGLRenderer();
-const controls = new OrbitControls(camera, renderer.domElement);
+const renderer = new THREE.WebGLRenderer({
+    canvas : document.querySelector("#bg")
+});
+
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const controls = new OrbitControls(camera, renderer.domElement);
 
-camera.position.set(0,0,5);
-camera.lookAt(0,0,0);
+camera.position.set(0,0,50);
+
+const courtYard = new THREE.TextureLoader().load('court.webp');
+scene.background = courtYard;
+
+const basketBallTexture = new THREE.TextureLoader().load('basket-texture-orange-vector.jpg');
+
+const geometry = new THREE.SphereGeometry(10,32,16);
+const material = new THREE.MeshStandardMaterial({color: 0xFF6347,map: basketBallTexture});
+const sphere = new THREE.Mesh(geometry, material);
+sphere.position.set(0,0,0);
+scene.add(sphere);
+
+const VolletTexture = new THREE.TextureLoader().load('volleyball-skin.jpg');
+const VolleyBall = new THREE.Mesh(
+    new THREE.SphereGeometry(5,32,16),
+    new THREE.MeshStandardMaterial({map: VolletTexture})
+);
+VolleyBall.position.set(-30,0,0);
+scene.add(VolleyBall);
+
+const pointLight = new THREE.PointLight(0xffffff);
+pointLight.position.set(20,20,20);
+const ambientLight = new THREE.AmbientLight(0xffffff);
+scene.add(pointLight,ambientLight);
+
+function move(v,u,g,t){
+    sphere.position.x += 0.03*t;
+    sphere.position.y += u*t - 0.5*g*t*t;
+    
+    VolleyBall.position.y += u*t - 0.5*g*t*t;
+    VolleyBall.position.z -= v*t;
+}
+
+var v=0.05;
+var t=0;
+var u=4;
+var g=9.8;
 
 function animate() {
-    cube.rotation.x+=0.01;
-    cube.rotation.y+=0.01;
+    t=t+0.01;
+    move(v,u,g,t);
+    if(sphere.position.y < -10){
+        // sphere.position.set(sphere.position.x,-10,sphere.position.z);
+        // VolleyBall.position.set(VolleyBall.position.x,VolleyBall.position.y,0);
+        // camera.position.set(0,0,30);
+        t=0;
+    }
+    sphere.rotation.x += 0.01;
+    sphere.rotation.y += 0.005;
+    sphere.rotation.z += 0.005;
+    VolleyBall.rotation.x +=0.01;
+    VolleyBall.rotation.y +=0.005;
+    VolleyBall.rotation.z +=0.005;
+    controls.update();
     renderer.render(scene, camera);
 }
 
+function moveCamera(){
+    const w = window.scrollY;
 
-const points =[];
-points.push(new THREE.Vector3(-10,0,0));
-points.push(new THREE.Vector3(0,10,0));
-points.push(new THREE.Vector3(10,0,0));
-
-const geometry1 = new THREE.BufferGeometry.setFromPoints(points);
-
-const line = new THREE.Line(geometry1,material);
-
-scene.add(line);
+    camera.position.z = w * -0.02+50;
+    camera.position.x = w * -0.005;
+    camera.position.y = w * -0.0002;
+}
+document.body.onscroll = moveCamera;
 
 renderer.setAnimationLoop(animate);
